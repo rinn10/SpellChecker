@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * A spellchecker maintains an efficient representation of a dictionary for
@@ -26,7 +28,12 @@ public class SpellChecker {
 
     /** A Node of the SpellChecker structure. */
     private class Node {
-        // TODO: implement me!
+        Node[] children;
+        boolean isEnd;
+        
+        public Node() {
+            children = new Node[26];
+        }        
     }
 
     /** The root of the SpellChecker */
