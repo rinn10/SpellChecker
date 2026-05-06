@@ -43,7 +43,7 @@ public class ExampleTests {
         assertFalse(sc.isWord("digy"));
 }
     @Test
-    void testGetOneCharEndCorrections_multipleResults() {
+    void testGetOneCharEndCorrections() {
         SpellChecker sc = new SpellChecker(List.of("dog", "doge", "dogma"));
         List<String> result = sc.getOneCharEndCorrections("dogy");
         assertTrue(result.contains("doge"));
