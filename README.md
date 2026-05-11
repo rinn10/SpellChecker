@@ -1,6 +1,5 @@
-# (_TODO: fill in the title of this assignment here!_)
-
-Authors: (_TODO: fill in your names here!_)
+# Project 9: Spell Checker
+Authors: Brisha Jain, Risa Takemoto
 
 ## Build commands
 
@@ -10,6 +9,6 @@ Authors: (_TODO: fill in your names here!_)
 
 ## Resources
 
-*   (_TODO: fill in resources here!_)
+*   ...
 *   ...
 *   ...

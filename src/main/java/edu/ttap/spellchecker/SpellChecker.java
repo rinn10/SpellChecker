@@ -5,8 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * A spellchecker maintains an efficient representation of a dictionary for
@@ -30,14 +28,15 @@ public class SpellChecker {
     /** A Node of the SpellChecker structure. */
     private class Node {
         Node[] children;
+
         boolean isEnd;
-        
+
         public Node() {
-            children = new Node[26];
-        }        
+            children = new Node[NUM_LETTERS];
+        }
     }
 
-    /** The root of the SpellChecker */
+    /** The root of the SpellChecker. */
     private Node root;
 
     /**
@@ -47,31 +46,29 @@ public class SpellChecker {
     public SpellChecker(List<String> dict) {
         root = new Node();
 
-        for(int i = 0; i < dict.size(); i++)
+        for (int i = 0; i < dict.size(); i++) {
             add(dict.get(i));
+        }
     }
 
     /**
-     * Adds the given word to the trie
+     * Adds the given word to the trie.
      * @param word the word to add
      */
     public void add(String word) {
-
         Node cur = root;
 
-        for(int i = 0; i < word.length(); i++)
-        {
+        for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
-
-            // a=0, b=1, c=3 etc...
             int index = letter - 'a';
 
-            if(cur.children[index] == null) {
+            if (cur.children[index] == null) {
                 cur.children[index] = new Node();
             }
-            // move to next
+
             cur = cur.children[index];
         }
+
         cur.isEnd = true;
     }
 
@@ -82,20 +79,19 @@ public class SpellChecker {
      */
     public boolean isWord(String word) {
         Node cur = root;
-        for(int i = 0; i < word.length(); i++)
-        {
-            char letter = word.charAt(i);
 
-            // a=0, b=1, c=3 etc...
+        for (int i = 0; i < word.length(); i++) {
+            char letter = word.charAt(i);
             int index = letter - 'a';
 
-            if(cur.children[index] == null) {
+            if (cur.children[index] == null) {
                 return false;
             }
-            // move to next
+
             cur = cur.children[index];
         }
-        return true;
+
+        return cur.isEnd;
     }
 
     /**
@@ -106,30 +102,29 @@ public class SpellChecker {
      */
     public List<String> getOneCharCompletions(String word) {
         List<String> words = new ArrayList<>();
-        Node cur= root;
+        Node cur = root;
 
-        for(int i = 0; i < word.length(); i++) {
+        for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
             int index = letter - 'a';
 
-            if(cur.children[index] == null){
+            if (cur.children[index] == null) {
                 return words;
             }
-            cur= cur.children[index];
+
+            cur = cur.children[index];
         }
 
-        for(int i=0; i<26; i++)
-        {
-            if(cur.children[i]!= null)
-            {
-                if(cur.children[i].isEnd){
-                    words.add(word+ ((char)('a'+i)));
+        for (int i = 0; i < NUM_LETTERS; i++) {
+            if (cur.children[i] != null) {
+                if (cur.children[i].isEnd) {
+                    words.add(word + ((char) ('a' + i)));
                 }
             }
         }
+
         return words;
     }
-
 
     /**
      * Returns a list of all words in the dictionary that can be formed by changing
@@ -139,17 +134,17 @@ public class SpellChecker {
      */
     public List<String> getOneCharEndCorrections(String word) {
         List<String> correctWords = new ArrayList<>();
-        char removed = word.charAt(word.length()-1);
-        String beg = word.substring(0, word.length()-1);
+        char removed = word.charAt(word.length() - 1);
+        String beg = word.substring(0, word.length() - 1);
 
-        for(char c='a'; c<='z'; c++)
-        {
-            if(c != removed) {
-                if(isWord(beg+c)){
-                    correctWords.add(beg+c);
+        for (char c = 'a'; c <= 'z'; c++) {
+            if (c != removed) {
+                if (isWord(beg + c)) {
+                    correctWords.add(beg + c);
                 }
             }
         }
+
         return correctWords;
     }
 
@@ -165,6 +160,7 @@ public class SpellChecker {
             String command = args[0];
             String word = args[1];
             SpellChecker checker = SpellChecker.fromFile(DICT_PATH);
+
             switch (command) {
                 case "check": {
                     System.out.println(checker.isWord(word) ? "correct" : "incorrect");
