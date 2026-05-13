@@ -57,6 +57,7 @@ public class SpellChecker {
      */
     public void add(String word) {
         Node cur = root;
+        word = word.toLowerCase();
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
@@ -79,6 +80,7 @@ public class SpellChecker {
      */
     public boolean isWord(String word) {
         Node cur = root;
+        word = word.toLowerCase();
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
@@ -103,6 +105,7 @@ public class SpellChecker {
     public List<String> getOneCharCompletions(String word) {
         List<String> words = new ArrayList<>();
         Node cur = root;
+        word = word.toLowerCase();
 
         for (int i = 0; i < word.length(); i++) {
             char letter = word.charAt(i);
@@ -134,6 +137,7 @@ public class SpellChecker {
      */
     public List<String> getOneCharEndCorrections(String word) {
         List<String> correctWords = new ArrayList<>();
+        word = word.toLowerCase();
         char removed = word.charAt(word.length() - 1);
         String beg = word.substring(0, word.length() - 1);
 

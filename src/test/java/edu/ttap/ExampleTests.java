@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -37,15 +38,26 @@ public class ExampleTests {
     }
 
     @Test
-    void testIsWord() {
-        SpellChecker sc = new SpellChecker(List.of("dog", "doge", "dogma"));
-        assertTrue(sc.isWord("dog"));
-        assertFalse(sc.isWord("digy"));
-}
+    void testIsWord() throws IOException {
+    SpellChecker sc = SpellChecker.fromFile("files/words_alpha.txt");
+    assertFalse(sc.isWord("hello"));
+    assertTrue(sc.isWord("apple"));
+    assertFalse(sc.isWord("spise")); 
+    }
+
     @Test
-    void testGetOneCharEndCorrections() {
-        SpellChecker sc = new SpellChecker(List.of("dog", "doge", "dogma"));
-        List<String> result = sc.getOneCharEndCorrections("dogy");
-        assertTrue(result.contains("doge"));
+    void testgetOneCharCompletions() throws IOException {
+        SpellChecker sc = SpellChecker.fromFile("files/words_alpha.txt");
+        List<String> result = sc.getOneCharCompletions("mat");
+        assertFalse(result.contains("mate"));
+        assertFalse(result.contains("math"));
+    }
+    
+    @Test
+    void testGetOneCharEndCorrections() throws IOException {
+        SpellChecker sc = SpellChecker.fromFile("files/words_alpha.txt");
+        List<String> result = sc.getOneCharEndCorrections("spawm");
+        assertFalse(result.contains("spawl"));
+        assertFalse(result.contains("spawn"));
     }
 }
